@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandra Crane - Tarjeta Digital & Growth Partner</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QRCode JS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- PWA & Apple Meta Tags -->
+    <meta name="theme-color" content="#00b7c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sandra Crane">
+
+    <!-- Manifest & Icons -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            cyan: '#00b7c7',
+                            darkCyan: '#008fa0',
+                            purple: '#92278f',
+                            red: '#ff4040',
+                            dark: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --primary-bg: #00b7c7;
+            --footer-bg: #92278f;
+            --accent-btn: #ff4040;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 183, 199, 0.25) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(146, 39, 143, 0.25) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(255, 64, 64, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .btn-gradient-red {
+            background: linear-gradient(135deg, #ff5252 0%, #ff4040 100%);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gradient-red:hover {
+            background: linear-gradient(135deg, #ff6666 0%, #e63333 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(255, 64, 64, 0.4);
+        }
+
+        .btn-gradient-red:active {
+            transform: translateY(0);
+        }
+
+        .action-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 183, 199, 0.5);
+            border-radius: 4px;
+        }
+
+        /* Modal transitions */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 200ms ease-out, transform 200ms ease-out;
+        }
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 150ms ease-in, transform 150ms ease-in;
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-center items-center p-3 sm:p-6 text-slate-100 antialiased selection:bg-cyan-500 selection:text-white">
+
+    <!-- Background Ambient Glow Effects -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Main Business Card Container -->
+    <main class="relative z-10 w-full max-w-[420px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gradient-to-b from-[#00b7c7] via-[#008fa0] to-[#0a6c78] transition-all duration-300">
+        
+        <!-- Header Banner Image with Fallback -->
+        <div class="relative h-48 w-full bg-gradient-to-r from-teal-800 to-cyan-900 overflow-hidden">
+            <img 
+                src="https://i.postimg.cc/cLPxF8Yq/fondo3.png" 
+                alt="Craneando Ideas Banner" 
+                class="w-full h-full object-cover object-center"
+                onerror="this.style.display='none'; document.getElementById('banner-fallback').classList.remove('hidden');"
+            />
+            <div id="banner-fallback" class="hidden absolute inset-0 bg-gradient-to-r from-cyan-600 via-teal-700 to-purple-800 flex items-center justify-center p-4">
+                <span class="text-white font-extrabold tracking-widest text-lg opacity-30 uppercase">Craneando Ideas</span>
+            </div>
+            <!-- Dynamic Gradient Overlay for smooth transition -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="relative px-6 pt-0 pb-4 text-center flex flex-col items-center">
+            <!-- Profile Photo Container -->
+            <div class="-mt-16 mb-3 relative group">
+                <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white shadow-2xl relative z-10 overflow-hidden ring-4 ring-cyan-300/30">
+                    <img 
+                        src="https://i.postimg.cc/gjLyvt7N/Sandra-Crane.jpg" 
+                        alt="Sandra Crane" 
+                        class="w-full h-full object-cover rounded-full"
+                        onerror="this.onerror=null; this.src='https://placehold.co/300x300/00b7c7/ffffff?text=Sandra+Crane';"
+                    />
+                </div>
+            </div>
+
+            <!-- Identity Info -->
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white drop-shadow-sm">Sandra Crane</h1>
+            <p class="text-xs sm:text-sm font-semibold text-cyan-100 uppercase tracking-wider mt-1 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 inline-block">
+                Estratega Creativa & Growth Partner
+            </p>
+            
+            <p class="text-xs sm:text-sm text-cyan-50/90 mt-3 max-w-xs leading-relaxed font-normal">
+                Convierto ideas en marcas, experiencias y sistemas que atraen, conectan y convierten.
+            </p>
+        </div>
+
+        <!-- Action Buttons Grid -->
+        <div class="px-5 py-4">
+            <div class="grid grid-cols-3 gap-3">
+                <!-- Services Modal Button -->
+                <button onclick="openModal('modal-services')" class="action-card btn-gradient-red text-white p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-lg group">
+                    <i class="fas fa-star text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold tracking-wide">Servicios</span>
+                </button>
+
+                <!-- QR Modal Button -->
+                <button onclick="openModal('modal-qr')" class="action-card btn-gradient-red text-white p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-lg group">
+                    <i class="fas fa-qrcode text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold tracking-wide">QR</span>
+                </button>
+
+                <!-- Website Link -->
+                <a href="https://www.craneandoideas.com/" target="_blank" rel="noopener text-white" class="action-card btn-gradient-red text-white p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-lg group">
+                    <i class="fas fa-globe text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold tracking-wide">Web</span>
+                </a>
+
+                <!-- Instagram Link -->
+                <a href="https://www.instagram.com/craneando_ideas?igsh=emJxODR1enQ5NjFw" target="_blank" rel="noopener" class="action-card btn-gradient-red text-white p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-lg group">
+                    <i class="fab fa-instagram text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold tracking-wide">Instagram</span>
+                </a>
+
+                <!-- WhatsApp Direct -->
+                <a href="https://wa.me/573125839043?text=Hola%20Sandra,%20me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20sobre%20tus%20servicios%20de%20Craneando%20Ideas." target="_blank" rel="noopener" class="action-card btn-gradient-red text-white p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-lg group">
+                    <i class="fab fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold tracking-wide">WhatsApp</span>
+                </a>
+
+                <!-- Download vCard Button -->
+                <button onclick="downloadVCard()" class="action-card btn-gradient-red text-white p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-lg group">
+                    <i class="fas fa-address-card text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold tracking-wide">Guardar</span>
+                </button>
+            </div>
+
+            <!-- Quick Contact Toolbar (Centered Email & Agendar buttons) -->
+            <div class="mt-4 pt-4 border-t border-white/15 flex items-center justify-center gap-6 text-xs">
+                <button onclick="openModal('modal-email')" class="flex items-center gap-1.5 bg-white text-[#008fa0] px-5 py-2 rounded-full font-bold shadow-md hover:bg-slate-100 transition-all">
+                    <i class="fas fa-envelope text-[#008fa0]"></i>
+                    <span>Email</span>
+                </button>
+                <button onclick="openModal('modal-contact')" class="flex items-center gap-1.5 bg-white text-[#008fa0] px-5 py-2 rounded-full font-bold shadow-md hover:bg-slate-100 transition-all">
+                    <i class="fas fa-calendar-check text-[#008fa0]"></i>
+                    <span>Agendar</span>
+                </button>
+            </div>
+
+            <!-- Botón de instalación en dispositivo -->
+            <div class="mt-3 text-center pb-1">
+                <button onclick="openModal('modal-install')" class="text-xs font-semibold text-white/90 underline underline-offset-4 hover:text-white transition-colors">
+                    ¿Cómo instalar en mi dispositivo?
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer Banner (Enlarged logo 100%, text CRANEANDO IDEAS) -->
+        <footer class="bg-[#92278f] px-6 py-4 flex items-center justify-between border-t border-purple-500/30">
+            <div class="flex items-center gap-3">
+                <img 
+                    src="https://i.postimg.cc/3JfcTzXC/LOGO-CRANEANDOm-23.png" 
+                    alt="Craneando Ideas Logo" 
+                    class="h-16 max-w-[200px] object-contain filter drop-shadow"
+                    onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-black text-white text-base tracking-wider\'>CRANEANDO IDEAS</span>';"
+                />
+            </div>
+            <div class="text-right">
+                <span class="text-white font-extrabold text-sm sm:text-base tracking-widest uppercase block">CRANEANDO IDEAS</span>
+            </div>
+        </footer>
+    </main>
+
+    <!-- MODAL 1: SERVICIOS (Fondo Blanco) -->
+    <div id="modal-services" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-white text-slate-800 w-full max-w-md rounded-3xl p-6 relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('modal-services')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-2xl bg-[#92278f] text-white flex items-center justify-center text-lg shadow-md">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">Mis Servicios</h3>
+                    <p class="text-xs text-slate-500">Soluciones a la medida para escalar tu marca</p>
+                </div>
+            </div>
+
+            <!-- 4 Servicios -->
+            <div class="space-y-4">
+                <!-- Servicio 1 -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-2xl bg-cyan-100 text-[#00b7c7] flex items-center justify-center text-lg font-bold shadow-sm">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">1. Branding</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-2">
+                        Creación de identidades de marca claras, coherentes y memorables.
+                    </p>
+                    <a href="https://wa.me/573125839043?text=Hola%20Sandra,%20quiero%20informaci%C3%B3n%20sobre%20Branding" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-[#00b7c7] hover:underline">
+                        Solicitar información <i class="fas fa-arrow-right text-[9px]"></i>
+                    </a>
+                </div>
+
+                <!-- Servicio 2 -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-2xl bg-purple-100 text-[#92278f] flex items-center justify-center text-lg font-bold shadow-sm">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">2. Web & Funnels</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-2">
+                        Diseño páginas y embudos pensados para atraer, informar y convertir.
+                    </p>
+                    <a href="https://wa.me/573125839043?text=Hola%20Sandra,%20quiero%20informaci%C3%B3n%20sobre%20Web%20y%20Funnels" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-[#92278f] hover:underline">
+                        Solicitar información <i class="fas fa-arrow-right text-[9px]"></i>
+                    </a>
+                </div>
+
+                <!-- Servicio 3 -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-2xl bg-red-100 text-[#ff4040] flex items-center justify-center text-lg font-bold shadow-sm">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">3. Contenido & Redes</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-2">
+                        Creo contenido estratégico que comunica, conecta y fortalece tu presencia digital.
+                    </p>
+                    <a href="https://wa.me/573125839043?text=Hola%20Sandra,%20quiero%20informaci%C3%B3n%20sobre%20Contenido%20y%20Redes" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-[#ff4040] hover:underline">
+                        Solicitar información <i class="fas fa-arrow-right text-[9px]"></i>
+                    </a>
+                </div>
+
+                <!-- Servicio 4 -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg font-bold shadow-sm">
+                            <i class="fas fa-[#008fa0] fa-chart-line"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">4. Performance Marketing & Automatización</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed mb-2">
+                        Diseño y gestiono campañas de pauta y automatizo el seguimiento para generar mejores oportunidades comerciales.
+                    </p>
+                    <a href="https://wa.me/573125839043?text=Hola%20Sandra,%20quiero%20informaci%C3%B3n%20sobre%20Performance%20Marketing%20y%20Automatizaci%C3%B3n" target="_blank" class="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 hover:underline">
+                        Solicitar información <i class="fas fa-arrow-right text-[9px]"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: CÓDIGO QR (Fondo Blanco) -->
+    <div id="modal-qr" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-white text-slate-800 w-full max-w-sm rounded-3xl p-6 relative shadow-2xl border border-slate-100 text-center">
+            <button onclick="closeModal('modal-qr')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Código QR</h3>
+            <p class="text-xs text-slate-500 mb-4">Escanea para guardar el contacto de Sandra Crane</p>
+            
+            <div id="qrcode" class="flex justify-center my-4"></div>
+
+            <button onclick="downloadQR()" class="w-full py-2.5 rounded-xl bg-[#00b7c7] text-white font-bold text-xs shadow-lg hover:bg-[#008fa0] transition-colors flex items-center justify-center gap-2 mt-2">
+                <i class="fas fa-download text-sm"></i> Descargar Imagen QR
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL 3: AGENDAR / CONTACTO (Fondo Blanco) -->
+    <div id="modal-contact" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-white text-slate-800 w-full max-w-sm rounded-3xl p-6 relative shadow-2xl border border-slate-100">
+            <button onclick="closeModal('modal-contact')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Agendar Diagnóstico</h3>
+            <p class="text-xs text-slate-500 mb-4">Envía un mensaje rápido para programar una llamada de exploración.</p>
+
+            <form onsubmit="sendBookingMessage(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Tu Nombre</label>
+                    <input type="text" id="booking-name" required placeholder="Ej. Ana María" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00b7c7]">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Empresa / Proyecto</label>
+                    <input type="text" id="booking-company" placeholder="Nombre de tu marca" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00b7c7]">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">¿Qué necesitas potenciar?</label>
+                    <textarea id="booking-notes" rows="3" placeholder="Cuéntame brevemente sobre tus objetivos..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00b7c7]"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00b7c7] text-white font-bold text-xs shadow-lg hover:bg-[#008fa0] transition-colors flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp text-sm"></i> Enviar por WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EMAIL (Fondo Blanco) -->
+    <div id="modal-email" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-white text-slate-800 w-full max-w-sm rounded-3xl p-6 relative shadow-2xl border border-slate-100">
+            <button onclick="closeModal('modal-email')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h3 class="text-xl font-bold text-slate-900 mb-1">Enviar Correo</h3>
+            <p class="text-xs text-slate-500 mb-4">Escríbeme directamente a mi correo corporativo.</p>
+
+            <form onsubmit="sendEmail(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Asunto</label>
+                    <input type="text" id="email-subject" required placeholder="Ej. Consulta sobre servicios" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00b7c7]">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Inquietud / Mensaje</label>
+                    <textarea id="email-body" rows="4" required placeholder="Escribe aquí tu mensaje o inquietud..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00b7c7]"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-[#00b7c7] text-white font-bold text-xs shadow-lg hover:bg-[#008fa0] transition-colors flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane text-sm"></i> Enviar Mensaje
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 4: CÓMO INSTALAR (Fondo Blanco) -->
+    <div id="modal-install" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-white text-slate-800 w-full max-w-md rounded-3xl p-6 relative shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('modal-install')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div class="text-center mb-5">
+                <h3 class="text-2xl font-extrabold text-[#006b75]">¡Lleva mi Tarjeta Contigo!</h3>
+                <div class="w-12 h-1 bg-amber-500 rounded-full mx-auto mt-2"></div>
+                <p class="text-xs text-slate-600 mt-4 leading-relaxed font-medium px-2">
+                    Accede a mi contacto rápidamente guardando esta tarjeta en la pantalla de inicio. ¡Es muy fácil!
+                </p>
+            </div>
+
+            <!-- Steps Grid (iOS & Android) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- iOS Card -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-left">
+                    <div class="flex items-center gap-2 mb-3 text-[#006b75]">
+                        <i class="fab fa-apple text-xl"></i>
+                        <h4 class="font-bold text-sm leading-tight">Para iOS<br><span class="text-xs font-semibold text-slate-500">(iPhone)</span></h4>
+                    </div>
+                    <ol class="space-y-2.5 text-xs text-slate-600 leading-snug">
+                        <li>
+                            <span class="font-medium">1. Toca el ícono de <strong>Compartir</strong> <i class="fas fa-arrow-up-from-bracket text-slate-500"></i> en Safari.</span>
+                        </li>
+                        <li>
+                            <span class="font-medium">2. Selecciona <strong>"Agregar a la pantalla de inicio"</strong>.</span>
+                        </li>
+                        <li>
+                            <span class="font-medium">3. ¡Listo! El acceso directo aparecerá en tu móvil.</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Android Card -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-left">
+                    <div class="flex items-center gap-2 mb-3 text-[#006b75]">
+                        <i class="fab fa-android text-xl"></i>
+                        <h4 class="font-bold text-sm">Para Android</h4>
+                    </div>
+                    <ol class="space-y-2.5 text-xs text-slate-600 leading-snug">
+                        <li>
+                            <span class="font-medium">1. Toca los <strong>tres puntos <i class="fas fa-ellipsis-v text-slate-500 text-[10px]"></i></strong> en Chrome.</span>
+                        </li>
+                        <li>
+                            <span class="font-medium">2. Selecciona <strong>"Agregar a la pantalla principal"</strong>.</span>
+                        </li>
+                        <li>
+                            <span class="font-medium">3. Confirma la acción y la tarjeta se añadirá.</span>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-slate-200 flex justify-end">
+                <button onclick="closeModal('modal-install')" class="px-5 py-2 rounded-xl bg-slate-200 text-slate-800 text-xs font-semibold hover:bg-slate-300 transition-colors">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 5: COMPARTIR -->
+    <div id="modal-share" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-300">
+        <div class="glass-card text-slate-800 dark:text-slate-100 w-full max-w-sm rounded-3xl p-6 relative shadow-2xl border border-white/20 text-center">
+            <button onclick="closeModal('modal-share')" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 flex items-center justify-center text-slate-600 dark:text-slate-200 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h3 class="text-xl font-bold mb-2">Compartir Tarjeta</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-5">Elige tu método preferido para compartir esta tarjeta digital:</p>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <button onclick="shareNative()" class="p-3 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500/20 text-[#00b7c7] dark:text-cyan-300 flex flex-col items-center gap-2 border border-cyan-500/20 transition-colors">
+                    <i class="fas fa-share-nodes text-xl"></i>
+                    <span class="text-xs font-semibold">Compartir</span>
+                </button>
+                <button onclick="copyCardLink()" class="p-3 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 text-[#92278f] dark:text-purple-300 flex flex-col items-center gap-2 border border-purple-500/20 transition-colors">
+                    <i class="fas fa-link text-xl"></i>
+                    <span class="text-xs font-semibold">Copiar Link</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed bottom-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-700 text-xs font-medium pointer-events-none">
+        <i id="toast-icon" class="fas fa-check-circle text-emerald-400 text-base"></i>
+        <span id="toast-message">Mensaje de prueba</span>
+    </div>
+
+    <script>
+        // Global variables and elements
+        let qrGenerated = false;
+
+        // Theme Toggle Logic
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fas fa-sun text-xs text-amber-300';
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fas fa-moon text-xs text-slate-200';
+            }
+        }
+
+        // Modal Controls
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            
+            // If QR modal, initialize QRCode library
+            if (id === 'modal-qr' && !qrGenerated) {
+                generateQRCode();
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Close modal when clicking backdrop
+        window.addEventListener('click', function(event) {
+            const modals = ['modal-services', 'modal-qr', 'modal-contact', 'modal-share', 'modal-install', 'modal-email'];
+            modals.forEach(id => {
+                const modal = document.getElementById(id);
+                if (event.target === modal) {
+                    closeModal(id);
+                }
+            });
+        });
+
+        // Send Email via mailto link
+        function sendEmail(e) {
+            e.preventDefault();
+            const subject = document.getElementById('email-subject').value;
+            const body = document.getElementById('email-body').value;
+            
+            const mailtoUrl = `mailto:scrane@craneandoideas.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoUrl;
+            closeModal('modal-email');
+        }
+
+        // vCard Download Functionality
+        function downloadVCard() {
+            const vCardData = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'N:Crane;Sandra;;;',
+                'FN:Sandra Crane',
+                'ORG:Craneando Ideas',
+                'TITLE:Estratega creativa & Growth Partner',
+                'TEL;TYPE=CELL,VOICE:+573125839043',
+                'EMAIL;TYPE=INTERNET:scrane@craneandoideas.com',
+                'URL:https://www.craneandoideas.com/',
+                'URL;TYPE=Instagram:https://www.instagram.com/craneando_ideas',
+                'NOTE:Convierto ideas en marcas, experiencias y sistemas que atraen, conectan y convierten.',
+                'END:VCARD'
+            ].join('\n');
+
+            const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Sandra_Crane_Craneando_Ideas.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            showToast('Contacto vCard descargado exitosamente', 'fas fa-check-circle text-emerald-400');
+        }
+
+        // QR Code Generation
+        function generateQRCode() {
+            const qrContainer = document.getElementById('qrcode');
+            if (!qrContainer) return;
+
+            qrContainer.innerHTML = ''; // Clear previous contents
+
+            const vCardData = [
+                'BEGIN:VCARD',
+                'VERSION:3.0',
+                'N:Crane;Sandra;;;',
+                'FN:Sandra Crane',
+                'ORG:Craneando Ideas',
+                'TITLE:Estratega creativa & Growth Partner',
+                'TEL;TYPE=CELL,VOICE:+573125839043',
+                'EMAIL;TYPE=INTERNET:scrane@craneandoideas.com',
+                'URL:https://www.craneandoideas.com/',
+                'END:VCARD'
+            ].join('\n');
+
+            new QRCode(qrContainer, {
+                text: vCardData,
+                width: 180,
+                height: 180,
+                colorDark: '#0f172a',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+            });
+
+            qrGenerated = true;
+        }
+
+        // Download QR image
+        function downloadQR() {
+            const qrImage = document.querySelector('#qrcode img');
+            const qrCanvas = document.querySelector('#qrcode canvas');
+
+            let imageURI = '';
+            if (qrImage && qrImage.src) {
+                imageURI = qrImage.src;
+            } else if (qrCanvas) {
+                imageURI = qrCanvas.toDataURL('image/png');
+            }
+
+            if (imageURI) {
+                const link = document.createElement('a');
+                link.href = imageURI;
+                link.download = 'Sandra_Crane_QR.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast('Imagen QR descargada', 'fas fa-download text-cyan-400');
+            } else {
+                showToast('Error al generar la imagen QR', 'fas fa-exclamation-circle text-amber-400');
+            }
+        }
+
+        // Copy Link to Clipboard
+        function copyCardLink() {
+            const currentUrl = window.location.href;
+            
+            // Helper fallback copy method
+            const tempInput = document.createElement('input');
+            tempInput.value = currentUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast('Enlace copiado al portapapeles', 'fas fa-copy text-cyan-400');
+            } catch (err) {
+                showToast('No se pudo copiar el enlace', 'fas fa-times-circle text-red-400');
+            } finally {
+                document.body.removeChild(tempInput);
+            }
+        }
+
+        // Native Web Share
+        function shareNative() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Sandra Crane - Tarjeta Digital',
+                    text: 'Sandra Crane | Estratega creativa & Growth Partner en Craneando Ideas',
+                    url: window.location.href,
+                }).catch(() => {
+                    // User canceled share
+                });
+            } else {
+                copyCardLink();
+            }
+        }
+
+        // Send Booking Form via WhatsApp
+        function sendBookingMessage(e) {
+            e.preventDefault();
+            const name = document.getElementById('booking-name').value;
+            const company = document.getElementById('booking-company').value;
+            const notes = document.getElementById('booking-notes').value;
+
+            const text = `Hola Sandra! Mi nombre es ${name}${company ? ' de ' + company : ''}. Me gustaría agendar un diagnóstico. ${notes ? 'Detalles: ' + notes : ''}`;
+            const encodedText = encodeURIComponent(text);
+            
+            window.open(`https://wa.me/573125839043?text=${encodedText}`, '_blank');
+            closeModal('modal-contact');
+        }
+
+        // Toast Notification System
+        function showToast(msg, iconClass = 'fas fa-check-circle text-emerald-400') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            if (!toast || !toastMsg) return;
+
+            toastMsg.textContent = msg;
+            toastIcon.className = iconClass;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado:', reg.scope))
+                    .catch(err => console.log('Error en Service Worker:', err));
+            });
+        }
+    </script>
+</body>
+</html>
